@@ -170,89 +170,30 @@
     </div>
 
 <script>
-    // Loại bỏ biến positions lỗi, tích hợp vị trí thẳng vào mảng ducks
+    let positions = [];
     const ducks = [
-        { id: 1, name: "Vịt Số 1", color: "🔴", position: 10 },
-        { id: 2, name: "Vịt Số 2", color: "🟡", position: 10 },
-        { id: 3, name: "Vịt Số 3", color: "🟢", position: 10 },
-        { id: 4, name: "Vịt Số 4", color: "🔵", position: 10 },
-        { id: 5, name: "Vịt Số 5", color: "🟣", position: 10 },
-        { id: 6, name: "Vịt Số 6", color: "🟠", position: 10 },
-        { id: 7, name: "Vịt Số 7", color: "🟤", position: 10 },
-        { id: 8, name: "Vịt Số 8", color: "⚪", position: 10 }
+        { id: 1, name: "Vịt Số 1", color: "🔴" },
+        { id: 2, name: "Vịt Số 2", color: "🟡" },
+        { id: 3, name: "Vịt Số 3", color: "🟢" },
+        { id: 4, name: "Vịt Số 4", color: "🔵" },
+        { id: 5, name: "Vịt Số 5", color: "🟣" },
+        { id: 6, name: "Vịt Số 6", color: "🟠" },
+        { id: 7, name: "Vịt Số 7", color: "🟤" },
+        { id: 8, name: "Vịt Số 8", color: "⚪" }
     ];
 
     let raceInterval = null;
-    let synthInterval = null;
     let isRacing = false;
     let startTime = null;
 
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = null;
-    let mainGainNode = null;
-
-    function initAudio() {
-        if (!audioCtx) {
-            audioCtx = new AudioContext();
-            mainGainNode = audioCtx.createGain();
-            mainGainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); 
-            mainGainNode.connect(audioCtx.destination);
-        }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-    }
-
-    function playSynthTrack(freq, duration) {
-        if (!audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'square'; 
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(mainGainNode);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-    }
-
-    function startBackgroundMusic() {
-        let notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
-        let step = 0;
-        synthInterval = setInterval(() => {
-            playSynthTrack(notes[step % notes.length], 0.15);
-            step++;
-        }, 200);
-    }
-
-    function playGrandVictory() {
-        const melody = [
-            {f: 523.25, d: 0.15}, {f: 523.25, d: 0.15}, {f: 523.25, d: 0.15}, 
-            {f: 523.25, d: 0.4}, {f: 415.30, d: 0.4}, {f: 466.16, d: 0.4}, 
-            {f: 523.25, d: 0.8}
-        ];
-        melody.forEach((note, index) => {
-            setTimeout(() => {
-                playSynthTrack(note.f, note.d);
-            }, index * 180);
-        });
-    }
-
     document.getElementById("start-btn").addEventListener("click", function() {
         if (isRacing) return;
-        
-        try {
-            initAudio();
-        } catch(e) {
-            console.log("Chờ tương tác");
-        }
 
         const inputNames = document.getElementById("names-input").value;
         const namesArray = inputNames.trim() !== "" ? inputNames.split(",").map(name => name.trim()).filter(name => name !== "") : [];
         
         ducks.forEach((duck, i) => {
-            duck.position = 10; // Reset vị trí gốc sạch sẽ
+            positions[i] = 10;
             if (namesArray[i]) {
                 duck.name = namesArray[i];
             } else {
@@ -271,54 +212,64 @@
 
         isRacing = true;
         this.disabled = true;
-startTime = performance.now();
-startBackgroundMusic();
-const trackWidth = document.getElementById("race-track").clientWidth;
-const finishLinePosition = trackWidth - 140;
-raceInterval = setInterval(() => {
-let winner = null;
-let maxPosition = -1;
-let leaderId = null;
-ducks.forEach((duck) => {
-// Di chuyển vị trí ngẫu nhiên
-duck.position += Math.floor(Math.random() * 8) + 2;
-const duckEl = document.getElementById(duck-${duck.id});
-if (duckEl) {
-duckEl.style.left = duck.position + "px";
-}
-if (duck.position > maxPosition) {
-maxPosition = duck.position;
-leaderId = duck.id;
-}
-if (duck.position >= finishLinePosition && !winner) {
-winner = duck;
-}
-});
-ducks.forEach(duck => {
-const laneEl = document.getElementById(lane-${duck.id});
-if (laneEl) {
-if (duck.id === leaderId) {
-laneEl.classList.add("leading");
-} else {
-laneEl.classList.remove("leading");
-}
-}
-});
-if (winner) {
-clearInterval(raceInterval);
-clearInterval(synthInterval);
-isRacing = false;
-document.getElementById("start-btn").disabled = false;
-ducks.forEach(duck => {
-const duckEl = document.getElementById(duck-${duck.id});
-if (duckEl) duckEl.classList.remove("running");
-});
-const endTime = performance.now();
-const totalTime = ((endTime - startTime) / 1000).toFixed(2);
-playGrandVictory();
-setTimeout(() => {
-alert(🏆 CHIẾN THẮNG 🏆\n\nChúc mừng [${winner.color} ${winner.name}] đã xuất sắc cán đích đầu tiên!\n⏱️ Thời gian kỷ lục: ${totalTime} giây.);
-}, 100);
-}
-}, 50);
-});
+        startTime = performance.now();
+
+        const trackWidth = document.getElementById("race-track").clientWidth;
+        const finishLinePosition = trackWidth - 140;
+
+        raceInterval = setInterval(() => {
+            let winner = null;
+            let maxPosition = -1;
+            let leaderId = null;
+
+            ducks.forEach((duck, i) => {
+                positions[i] += Math.floor(Math.random() * 8) + 2;
+                
+                const duckEl = document.getElementById(`duck-${duck.id}`);
+                if (duckEl) {
+                    duckEl.style.left = positions[i] + "px";
+                }
+                
+                if (positions[i] > maxPosition) {
+                    maxPosition = positions[i];
+                    leaderId = duck.id;
+                }
+
+                if (positions[i] >= finishLinePosition && !winner) {
+                    winner = duck;
+                }
+            });
+
+            ducks.forEach(duck => {
+                const laneEl = document.getElementById(`lane-${duck.id}`);
+                if (laneEl) {
+                    if (duck.id === leaderId) {
+                        laneEl.classList.add("leading");
+                    } else {
+                        laneEl.classList.remove("leading");
+                    }
+                }
+            });
+
+            if (winner) {
+                clearInterval(raceInterval);
+                isRacing = false;
+                document.getElementById("start-btn").disabled = false;
+
+                ducks.forEach(duck => {
+                    const duckEl = document.getElementById(`duck-${duck.id}`);
+                    if (duckEl) duckEl.classList.remove("running");
+                });
+
+                const endTime = performance.now();
+                const totalTime = ((endTime - startTime) / 1000).toFixed(2);
+
+                setTimeout(() => {
+                    alert(`🏆 CHIẾN THẮNG 🏆\n\nChúc mừng [${winner.color} ${winner.name}] đã xuất sắc cán đích đầu tiên!\n⏱️ Thời gian kỷ lục: ${totalTime} giây.`);
+                }, 100);
+            }
+        }, 50);
+    });
+</script>
+</body>
+</html>
