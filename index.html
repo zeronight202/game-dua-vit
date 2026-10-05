@@ -170,16 +170,16 @@
     </div>
 
 <script>
-    let positions = [];
+    // Loại bỏ biến positions lỗi, tích hợp vị trí thẳng vào mảng ducks
     const ducks = [
-        { id: 1, name: "Vịt Số 1", color: "🔴" },
-        { id: 2, name: "Vịt Số 2", color: "🟡" },
-        { id: 3, name: "Vịt Số 3", color: "🟢" },
-        { id: 4, name: "Vịt Số 4", color: "🔵" },
-        { id: 5, name: "Vịt Số 5", color: "🟣" },
-        { id: 6, name: "Vịt Số 6", color: "🟠" },
-        { id: 7, name: "Vịt Số 7", color: "🟤" },
-        { id: 8, name: "Vịt Số 8", color: "⚪" }
+        { id: 1, name: "Vịt Số 1", color: "🔴", position: 10 },
+        { id: 2, name: "Vịt Số 2", color: "🟡", position: 10 },
+        { id: 3, name: "Vịt Số 3", color: "🟢", position: 10 },
+        { id: 4, name: "Vịt Số 4", color: "🔵", position: 10 },
+        { id: 5, name: "Vịt Số 5", color: "🟣", position: 10 },
+        { id: 6, name: "Vịt Số 6", color: "🟠", position: 10 },
+        { id: 7, name: "Vịt Số 7", color: "🟤", position: 10 },
+        { id: 8, name: "Vịt Số 8", color: "⚪", position: 10 }
     ];
 
     let raceInterval = null;
@@ -252,7 +252,7 @@
         const namesArray = inputNames.trim() !== "" ? inputNames.split(",").map(name => name.trim()).filter(name => name !== "") : [];
         
         ducks.forEach((duck, i) => {
-            positions[i] = 10;
+            duck.position = 10; // Reset vị trí gốc sạch sẽ
             if (namesArray[i]) {
                 duck.name = namesArray[i];
             } else {
@@ -271,28 +271,26 @@
 
         isRacing = true;
         this.disabled = true;
-        startTime = performance.now();
-        
-        startBackgroundMusic();
-
-        const trackWidth = document.getElementById("race-track").clientWidth;
-        const finishLinePosition = trackWidth - 140;
-
-        raceInterval = setInterval(() => {
-            let winner = null;
+startTime = performance.now();
+startBackgroundMusic();
+const trackWidth = document.getElementById("race-track").clientWidth;
+const finishLinePosition = trackWidth - 140;
+raceInterval = setInterval(() => {
+let winner = null;
 let maxPosition = -1;
 let leaderId = null;
-ducks.forEach((duck, i) => {
-positions[i] += Math.floor(Math.random() * 8) + 2;
+ducks.forEach((duck) => {
+// Di chuyển vị trí ngẫu nhiên
+duck.position += Math.floor(Math.random() * 8) + 2;
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
-duckEl.style.left = positions[i] + "px";
+duckEl.style.left = duck.position + "px";
 }
-if (positions[i] > maxPosition) {
-maxPosition = positions[i];
+if (duck.position > maxPosition) {
+maxPosition = duck.position;
 leaderId = duck.id;
 }
-if (positions[i] >= finishLinePosition && !winner) {
+if (duck.position >= finishLinePosition && !winner) {
 winner = duck;
 }
 });
