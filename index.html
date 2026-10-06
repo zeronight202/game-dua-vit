@@ -253,17 +253,18 @@
     </div>
 
     <script>
-        let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
+        // Mảng số lưu vị trí chuẩn xác
+        let positions =;
         
         const ducks = [
-            { id: "1", name: "Vịt Số 1", icon: "🦆🟡" },
-            { id: "2", name: "Vịt Số 2", icon: "🦆🟢" },
-            { id: "3", name: "Vịt Số 3", icon: "🦆🔵" },
-            { id: "4", name: "Vịt Số 4", icon: "🦆🔴" },
-            { id: "5", name: "Vịt Số 5", icon: "🦆🟣" },
-            { id: "6", name: "Vịt Số 6", icon: "🦆🟠" },
-            { id: "7", name: "Vịt Số 7", icon: "🦆🟤" },
-            { id: "8", name: "Vịt Số 8", icon: "🦆⚫" }
+            { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
+            { id: 2, name: "Vịt Số 2", icon: "🦆🟢" },
+            { id: 3, name: "Vịt Số 3", icon: "🦆🔵" },
+            { id: 4, name: "Vịt Số 4", icon: "🦆🔴" },
+            { id: 5, name: "Vịt Số 5", icon: "🦆🟣" },
+            { id: 6, name: "Vịt Số 6", icon: "🦆🟠" },
+            { id: 7, name: "Vịt Số 7", icon: "🦆🟤" },
+            { id: 8, name: "Vịt Số 8", icon: "🦆⚫" }
         ];
 
         let raceInterval = null;
@@ -291,6 +292,7 @@
                 
                 positions[duck.id] = 10;
             });
+
 isRacing = true;
 this.disabled = true;
 startTime = performance.now();
@@ -302,7 +304,10 @@ let leadingPosition = -1;
 let leaderId = null;
 let winner = null;
 ducks.forEach(duck => {
-positions[duck.id] += Math.floor(Math.random() * 6) + 2;
+// Phép cộng số chuẩn xác tuyệt đối
+const currentPos = positions[duck.id];
+const nextStep = Math.floor(Math.random() * 6) + 2;
+positions[duck.id] = currentPos + nextStep;
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
 duckEl.style.left = positions[duck.id] + "px";
@@ -313,10 +318,8 @@ leaderId = duck.id;
 }
 if (positions[duck.id] >= finishLinePosition && !winner) {
 winner = { ...duck };
-const currentNamesInput = document.getElementById('names-input').value;
-const currentNamesArray = currentNamesInput.split(',').map(name => name.trim()).filter(name => name !== "");
-if(currentNamesArray[parseInt(duck.id) - 1]) {
-winner.name = currentNamesArray[parseInt(duck.id) - 1];
+if(namesArray[duck.id - 1]) {
+winner.name = namesArray[duck.id - 1];
 }
 }
 });
