@@ -59,6 +59,8 @@
             cursor: pointer;
             user-select: none;
             z-index: 5;
+            /* ĐÃ SỬA: Thêm dòng này để quay mặt chú vịt sang bên phải vạch đích */
+            transform: scaleX(-1);
         }
 
         .finish-line-marker {
@@ -173,7 +175,7 @@
     </div>
 
     <script>
-        // Khởi tạo vị trí ban đầu (dùng Object để tránh hoàn toàn lỗi cú pháp nuốt ký tự)
+        // Khởi tạo vị trí ban đầu
         let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
         let raceInterval = null;
         let isRacing = false;
