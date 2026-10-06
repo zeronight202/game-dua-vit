@@ -66,7 +66,7 @@
         .duck-avatar {
             font-size: 30px;
             display: inline-block;
-            transform: scaleX(-1); 
+            transform: scaleX(-1); /* Lật vịt quay mặt sang phải */
         }
 
         .duck-name {
@@ -167,13 +167,13 @@
 
     <div id="race-track">
         <div class="lane" id="lane-1"><div class="finish-line-marker"></div><div class="duck" id="duck-1"><span class="duck-avatar">🦆🟡</span><span class="duck-name" id="name-1">Vịt Số 1</span></div></div>
-        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name">Vịt Số 2</span></div></div>
-        <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3"><span class="duck-avatar">🦆🔵</span><span class="duck-name">Vịt Số 3</span></div></div>
-        <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4"><span class="duck-avatar">🦆🔴</span><span class="duck-name">Vịt Số 4</span></div></div>
-        <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5"><span class="duck-avatar">🦆🟣</span><span class="duck-name">Vịt Số 5</span></div></div>
-        <div class="lane" id="lane-6"><div class="finish-line-marker"></div><div class="duck" id="duck-6"><span class="duck-avatar">🦆🟠</span><span class="duck-name">Vịt Số 6</span></div></div>
-        <div class="lane" id="lane-7"><div class="finish-line-marker"></div><div class="duck" id="duck-7"><span class="duck-avatar">🦆🟤</span><span class="duck-name">Vịt Số 7</span></div></div>
-        <div class="lane" id="lane-8"><div class="finish-line-marker"></div><div class="duck" id="duck-8"><span class="duck-avatar">🦆⚫</span><span class="duck-name">Vịt Số 8</span></div></div>
+        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name" id="name-2">Vịt Số 2</span></div></div>
+        <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3"><span class="duck-avatar">🦆🔵</span><span class="duck-name" id="name-3">Vịt Số 3</span></div></div>
+        <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4"><span class="duck-avatar">🦆🔴</span><span class="duck-name" id="name-4">Vịt Số 4</span></div></div>
+        <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5"><span class="duck-avatar">🦆🟣</span><span class="duck-name" id="name-5">Vịt Số 5</span></div></div>
+        <div class="lane" id="lane-6"><div class="finish-line-marker"></div><div class="duck" id="duck-6"><span class="duck-avatar">🦆🟠</span><span class="duck-name" id="name-6">Vịt Số 6</span></div></div>
+        <div class="lane" id="lane-7"><div class="finish-line-marker"></div><div class="duck" id="duck-7"><span class="duck-avatar">🦆🟤</span><span class="duck-name" id="name-7">Vịt Số 7</span></div></div>
+        <div class="lane" id="lane-8"><div class="finish-line-marker"></div><div class="duck" id="duck-8"><span class="duck-avatar">🦆⚫</span><span class="duck-name" id="name-8">Vịt Số 8</span></div></div>
     </div>
 
     <div class="controls">
@@ -190,34 +190,10 @@
     </div>
 
     <script>
-        let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
+        // Sử dụng Object tường minh lưu vị trí để loại bỏ hoàn toàn lỗi
+        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
         let raceInterval = null;
-        let soundInterval = null;
         let isRacing = false;
-        let audioCtx = null;
-
-        // Hàm phát âm thanh Beep bíp 8-bit bằng thuật toán hệ thống
-        function playBeep(frequency, duration) {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-
-                oscillator.type = 'square'; // Sóng vuông tạo âm thanh game retro cổ điển
-                oscillator.frequency.value = frequency; 
-                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); // Âm lượng nhỏ nhẹ dịu tai (5%)
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + duration);
-            } catch(e) {
-                console.log("Trình duyệt chưa cho phép tương tác âm thanh");
-            }
-        }
 
         document.getElementById('btn-start').addEventListener("click", function() {
             if (isRacing) return;
@@ -227,6 +203,7 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
+            // Gán tên người chơi và đặt vị trí xuất phát ban đầu
             for (let i = 1; i <= 8; i++) {
                 positions[i] = 10;
                 
@@ -241,11 +218,6 @@
 
             isRacing = true;
             this.disabled = true;
-
-            // Phát chuỗi âm thanh đếm nhịp game liên tục khi bầy vịt chạy đua
-            soundInterval = setInterval(() => {
-                playBeep(300, 0.05);
-            }, 300);
 
             const trackContainer = document.getElementById('race-track');
             const trackWidth = trackContainer.clientWidth || 900;
@@ -269,28 +241,29 @@
 
                 if (winnerId) {
                     clearInterval(raceInterval);
-                    clearInterval(soundInterval); // Tắt âm thanh chạy đua
                     isRacing = false;
                     document.getElementById('btn-start').disabled = false;
 
-                    // Phát tiếng chuông reo chiến thắng vui tươi dài hơi hơn
-playBeep(600, 0.2);
-setTimeout(() => playBeep(800, 0.3), 150);
-const currentNameEl = document.getElementById(name-${winnerId});
-let winnerName = currentNameEl ? currentNameEl.innerText : Vịt Số ${winnerId};
-setTimeout(() => {
-const modal = document.getElementById('victory-modal');
-document.getElementById('modal-message').innerText = Chúc mừng [ ${winnerName} ] đã giành chiến thắng!;
-modal.style.display = 'flex';
-}, 50);
-}
-}, 40);
-});
-document.getElementById('btn-close-modal').addEventListener('click', function() {
-document.getElementById('victory-modal').style.display = 'none';
-for (let i = 1; i <= 8; i++) {
-const duckEl = document.getElementById(duck-${i});
-if (duckEl) duckEl.style.left = '10px';
-positions[i] = 10;
-}
-});
+                    const currentNameEl = document.getElementById(`name-${winnerId}`);
+                    let winnerName = currentNameEl ? currentNameEl.innerText : `Vịt Số ${winnerId}`;
+
+                    setTimeout(() => {
+                        const modal = document.getElementById('victory-modal');
+                        document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
+                        modal.style.display = 'flex';
+                    }, 50);
+                }
+            }, 40);
+        });
+
+        document.getElementById('btn-close-modal').addEventListener('click', function() {
+            document.getElementById('victory-modal').style.display = 'none';
+            for (let i = 1; i <= 8; i++) {
+                const duckEl = document.getElementById(`duck-${i}`);
+                if (duckEl) duckEl.style.left = '10px';
+                positions[i] = 10;
+            }
+        });
+    </script>
+</body>
+</html>
