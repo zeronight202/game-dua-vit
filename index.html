@@ -160,7 +160,7 @@
             cursor: not-allowed;
         }
 
-        /* Bảng Modal chúc mừng */
+        /* Modal popup thông báo */
         #victory-modal {
             display: none;
             position: fixed;
@@ -315,7 +315,6 @@
                     
                     const avatarEl = duckEl.querySelector('.duck-avatar');
                     if (avatarEl) {
-                        // Đã sửa triệt để lỗi: Dùng công thức toán học thay thế hoàn toàn mảng lỗi
                         const calculatedAngle = index * 45;
                         avatarEl.style.filter = "hue-rotate(" + calculatedAngle + "deg)";
                     }
@@ -324,10 +323,11 @@
                 const laneEl = document.getElementById(`lane-${duck.id}`);
                 if (laneEl) laneEl.classList.remove('leading');
                 
-positions[duck.id] = 10;
-});
-isRacing = true;
-this.disabled = true;
+                positions[duck.id] = 10;
+            });
+
+            isRacing = true;
+            this.disabled = true;
 startTime = performance.now();
 const trackWidth = trackContainer.clientWidth;
 const finishLinePosition = trackWidth - 140;
