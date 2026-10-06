@@ -21,30 +21,29 @@
 
         h2 {
             color: #0288d1; 
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
             text-align: center;
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
+            font-size: 20px;
+            letter-spacing: 2px;
         }
 
         #race-track {
             background-color: #0288d1; 
             border: 4px solid #01579b;
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 10px;
+            padding: 10px;
             width: 100%;
             max-width: 900px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 16px rgba(1, 87, 155, 0.2);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .lane {
             height: 75px; 
-            border-bottom: 2px dashed rgba(224, 247, 250, 0.6); 
+            border-bottom: 2px dashed #e0f7fa; 
             position: relative;
-            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            background-color: #4fc3f7; 
             width: 100%;
         }
 
@@ -65,7 +64,7 @@
         }
 
         .duck-avatar {
-            font-size: 32px;
+            font-size: 30px;
             display: inline-block;
             transform: scaleX(-1); /* Quay vịt sang phải */
         }
@@ -73,13 +72,12 @@
         .duck-name {
             font-size: 11px;
             font-weight: bold;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.6);
             color: white;
-            padding: 2px 8px;
-            border-radius: 6px;
+            padding: 1px 6px;
+            border-radius: 4px;
             white-space: nowrap;
             margin-top: 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .finish-line-marker {
@@ -87,14 +85,14 @@
             right: 80px;
             top: 0;
             bottom: 0;
-            width: 16px;
+            width: 15px;
             background-image: linear-gradient(45deg, #000 25%, transparent 25%),
                               linear-gradient(-45deg, #000 25%, transparent 25%),
                               linear-gradient(45deg, transparent 75%, #000 75%),
                               linear-gradient(-45deg, transparent 75%, #000 75%);
             background-size: 10px 10px;
             background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.15);
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
             z-index: 2;
         }
 
@@ -109,25 +107,18 @@
 
         input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border-radius: 25px;
             border: 2px solid #0288d1;
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
             text-align: center;
             margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
-        }
-
-        input:focus {
-            border-color: #ff5722;
-            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.15);
         }
 
         button {
-            padding: 14px 45px;
-            background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
+            padding: 12px 35px;
+            background-color: #ff5722;
             color: white;
             border: none;
             font-size: 16px;
@@ -135,34 +126,13 @@
             border-radius: 25px;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
-            transition: all 0.2s ease;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(255, 87, 34, 0.4);
-        }
-
-        button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(255, 87, 34, 0.2);
-        }
-
-        button:disabled {
-            background: #b0bec5;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
         }
 
         #victory-modal {
             display: none; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.6);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -170,36 +140,24 @@
 
         .modal-content {
             background: white;
-            padding: 35px;
-            border-radius: 20px;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
-            max-width: 420px;
+            max-width: 400px;
             width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-            animation: modalPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalPopIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         #btn-close-modal {
-            background: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
+            background: #0288d1;
             color: white;
             border: none;
-            padding: 12px 35px;
+            padding: 10px 30px;
             font-size: 16px;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
             margin-top: 15px;
-            box-shadow: 0 4px 8px rgba(2, 136, 209, 0.3);
-            transition: all 0.2s ease;
-        }
-
-        #btn-close-modal:hover {
-            box-shadow: 0 6px 12px rgba(2, 136, 209, 0.4);
         }
     </style>
 </head>
@@ -225,14 +183,14 @@
 
     <div id="victory-modal">
         <div class="modal-content">
-            <h2 style="color: #ff5722; font-size: 28px; margin: 0; font-weight: 800;">🏆 CHIẾN THẮNG 🏆</h2>
-            <p id="modal-message" style="font-size: 18px; font-weight: bold; margin: 20px 0; color: #333; line-height: 1.5;"></p>
+            <h2 style="color: #ff5722; font-size: 26px; margin: 0;">🏆 CHIẾN THẮNG 🏆</h2>
+            <p id="modal-message" style="font-size: 18px; font-weight: bold; margin: 20px 0; color: #333;"></p>
             <button id="btn-close-modal">Đua tiếp</button>
         </div>
     </div>
 
     <script>
-        // Bản vị trí số chuẩn xác đã loại bỏ hoàn toàn mã lỗi
+        // Sử dụng Object tường minh lưu vị trí số nguyên để loại bỏ hoàn toàn lỗi
         let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
         let raceInterval = null;
         let isRacing = false;
@@ -245,6 +203,7 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
+            // Gán tên người chơi và reset vị trí xuất phát ban đầu
             for (let i = 1; i <= 8; i++) {
                 positions[i] = 10;
                 
@@ -275,29 +234,36 @@
                         duckEl.style.left = positions[i] + "px"; // Khôi phục dòng lệnh mượt 100%
                     }
 
-if (positions[i] >= finishLinePosition && !winnerId) {
-winnerId = i;
-}
-}
-if (winnerId) {
-clearInterval(raceInterval);
-isRacing = false;
-document.getElementById('btn-start').disabled = false;
-const currentNameEl = document.getElementById(name-${winnerId});
-let winnerName = currentNameEl ? currentNameEl.innerText : Vịt Số ${winnerId};
-setTimeout(() => {
-const modal = document.getElementById('victory-modal');
-document.getElementById('modal-message').innerText = Chúc mừng [ ${winnerName} ] đã xuất sắc giành chiến thắng!;
-modal.style.display = 'flex';
-}, 50);
-}
-}, 40);
-});
-document.getElementById('btn-close-modal').addEventListener('click', function() {
-document.getElementById('victory-modal').style.display = 'none';
-for (let i = 1; i <= 8; i++) {
-const duckEl = document.getElementById(duck-${i});
-if (duckEl) duckEl.style.left = '10px';
-positions[i] = 10;
-}
-});
+                    if (positions[i] >= finishLinePosition && !winnerId) {
+                        winnerId = i;
+                    }
+                }
+
+                if (winnerId) {
+                    clearInterval(raceInterval);
+                    isRacing = false;
+                    document.getElementById('btn-start').disabled = false;
+
+                    const currentNameEl = document.getElementById(`name-${winnerId}`);
+                    let winnerName = currentNameEl ? currentNameEl.innerText : `Vịt Số ${winnerId}`;
+
+                    setTimeout(() => {
+                        const modal = document.getElementById('victory-modal');
+                        document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
+                        modal.style.display = 'flex';
+                    }, 50);
+                }
+            }, 40);
+        });
+
+        document.getElementById('btn-close-modal').addEventListener('click', function() {
+            document.getElementById('victory-modal').style.display = 'none';
+            for (let i = 1; i <= 8; i++) {
+                const duckEl = document.getElementById(`duck-${i}`);
+                if (duckEl) duckEl.style.left = '10px';
+                positions[i] = 10;
+            }
+        });
+    </script>
+</body>
+</html>
