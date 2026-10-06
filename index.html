@@ -84,6 +84,7 @@
             line-height: 1;
             transform: scale(-1, 1);
             display: inline-block;
+            transition: filter 0.3s ease;
         }
 
         .duck-name {
@@ -159,7 +160,7 @@
             cursor: not-allowed;
         }
 
-        /* Modal popup thông báo kết quả */
+        /* Khung thông báo kết quả */
         #victory-modal {
             display: none;
             position: fixed;
@@ -188,6 +189,7 @@
             font-size: 70px;
             margin: 15px 0;
             display: inline-block;
+            transform: scale(-1, 1);
         }
 
         #modal-message {
@@ -227,7 +229,7 @@
     <h2>💥 GIẢI ĐUA VỊT NGOẠI HẠNG QUACK-RACING 💥</h2>
 
     <div id="race-track">
-        <!-- Các làn đua tự động sinh bằng JavaScript -->
+        <!-- Làn đua sinh tự động -->
     </div>
 
     <div class="controls">
@@ -235,7 +237,7 @@
         <button id="btn-start">Bắt đầu đua!</button>
     </div>
 
-    <!-- Modal thông báo kết quả -->
+    <!-- Cửa sổ pop-up chúc mừng cán đích -->
     <div id="victory-modal">
         <div class="modal-content">
             <h2 style="color: #ff5722; font-size: 28px; margin-bottom: 5px;">🏆 CHIẾN THẮNG 🏆</h2>
@@ -247,16 +249,16 @@
     </div>
 
     <script>
-        let positions = {};
+        let positions = [];
         const ducks = [
-            { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
-            { id: 2, name: "Vịt Số 2", icon: "🦆🟢" },
-            { id: 3, name: "Vịt Số 3", icon: "🦆🔵" },
-            { id: 4, name: "Vịt Số 4", icon: "🦆🔴" },
-            { id: 5, name: "Vịt Số 5", icon: "🦆🟣" },
-            { id: 6, name: "Vịt Số 6", icon: "🦆🟠" },
-            { id: 7, name: "Vịt Số 7", icon: "🦆🟤" },
-            { id: 8, name: "Vịt Số 8", icon: "🦆⚫" }
+            { id: 1, name: "Vịt Số 1" },
+            { id: 2, name: "Vịt Số 2" },
+            { id: 3, name: "Vịt Số 3" },
+            { id: 4, name: "Vịt Số 4" },
+            { id: 5, name: "Vịt Số 5" },
+            { id: 6, name: "Vịt Số 6" },
+            { id: 7, name: "Vịt Số 7" },
+            { id: 8, name: "Vịt Số 8" }
         ];
 
         let raceInterval = null;
@@ -265,10 +267,9 @@
 
         const trackContainer = document.getElementById('race-track');
         
-        // Khởi tạo các làn đua ngay lập tức khi tải trang
         function initTrack() {
             trackContainer.innerHTML = '';
-            ducks.forEach(duck => {
+            ducks.forEach((duck, index) => {
                 const laneDiv = document.createElement('div');
                 laneDiv.className = 'lane';
                 laneDiv.id = `lane-${duck.id}`;
@@ -283,7 +284,11 @@
 
                 const avatarSpan = document.createElement('span');
                 avatarSpan.className = 'duck-avatar';
-                avatarSpan.innerText = duck.icon;
+                avatarSpan.innerText = '🦆';
+                
+                // Thuật toán gán màu tự động theo vị trí làn đua (không dùng mảng số, an toàn 100%)
+                const angle = index * 40;
+                avatarSpan.style.filter = "hue-rotate(" + angle + "deg)";
 
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'duck-name';
@@ -294,13 +299,8 @@
                 laneDiv.appendChild(finishLine);
                 laneDiv.appendChild(duckDiv);
                 trackContainer.appendChild(laneDiv);
-                
-                // Đặt vị trí xuất phát mặc định
-                positions[duck.id] = 10;
             });
         }
-        
-        // Chạy hàm khởi tạo giao diện
         initTrack();
 
         document.getElementById('btn-start').addEventListener("click", function() {
@@ -328,34 +328,28 @@
             isRacing = true;
             this.disabled = true;
 startTime = performance.now();
-// Tính toán vị trí vạch đích động dựa trên khung track
-const trackWidth = trackContainer.clientWidth || 900;
+const trackWidth = trackContainer.clientWidth;
 const finishLinePosition = trackWidth - 140;
 raceInterval = setInterval(() => {
 let leadingPosition = -1;
 let leaderId = null;
 let winner = null;
 ducks.forEach(duck => {
-// Di chuyển ngẫu nhiên tiến lên phía trước
-positions[duck.id] += Math.floor(Math.random() * 8) + 2;
+if (positions[duck.id] >= finishLinePosition && !winner) {
+winner = { ...duck };
+if(namesArray[duck.id - 1]) {
+winner.name = namesArray[duck.id - 1];
+}
+}
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
 duckEl.style.left = positions[duck.id] + "px";
 }
-// Tìm vịt dẫn đầu để đổi màu làn đua
 if (positions[duck.id] > leadingPosition) {
 leadingPosition = positions[duck.id];
 leaderId = duck.id;
 }
-// Kiểm tra điều kiện cán đích
-if (positions[duck.id] >= finishLinePosition && !winner) {
-winner = { ...duck };
-if (namesArray[duck.id - 1]) {
-winner.name = namesArray[duck.id - 1];
-}
-}
 });
-// Cập nhật highlight cho làn dẫn đầu
 ducks.forEach(duck => {
 const laneEl = document.getElementById(lane-${duck.id});
 if (laneEl) {
@@ -366,7 +360,6 @@ laneEl.classList.remove('leading');
 }
 }
 });
-// Xử lý khi có vịt thắng cuộc
 if (winner) {
 clearInterval(raceInterval);
 isRacing = false;
@@ -378,19 +371,24 @@ if (duckEl) duckEl.classList.remove('running');
 const endTime = performance.now();
 const totalTime = ((endTime - startTime) / 1000).toFixed(2);
 setTimeout(() => {
+const duckEl = document.getElementById(duck-${winner.id});
+const filterStyle = duckEl ? duckEl.querySelector('.duck-avatar').style.filter : '';
 const modal = document.getElementById('victory-modal');
 const modalAvatar = document.getElementById('modal-avatar');
 const modalMessage = document.getElementById('modal-message');
 const modalTime = document.getElementById('modal-time');
-modalAvatar.innerText = winner.icon;
+modalAvatar.style.filter = filterStyle;
 modalMessage.innerText = Chúc mừng [ ${winner.name} ] đã xuất sắc cán đích đầu tiên!;
 modalTime.innerText = ⏱️ Thời gian chạy kỷ lục: ${totalTime} giây;
 modal.style.display = 'flex';
 }, 50);
+return;
 }
+ducks.forEach(duck => {
+positions[duck.id] += Math.floor(Math.random() * 8) + 2;
+});
 }, 50);
 });
-// Hàm xử lý đóng modal và reset vị trí
 document.getElementById('btn-close-modal').addEventListener('click', function() {
 document.getElementById('victory-modal').style.display = 'none';
 ducks.forEach(duck => {
@@ -398,6 +396,5 @@ const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) duckEl.style.left = '10px';
 const laneEl = document.getElementById(lane-${duck.id});
 if (laneEl) laneEl.classList.remove('leading');
-positions[duck.id] = 10;
 });
 });
