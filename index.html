@@ -253,8 +253,8 @@
     </div>
 
     <script>
-        // Mảng số lưu vị trí chuẩn xác
-        let positions =;
+        // SỬA LỖI TRIỆT ĐỂ: Khởi tạo đối tượng positions rỗng trước
+        let positions = {};
         
         const ducks = [
             { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
@@ -266,6 +266,11 @@
             { id: 7, name: "Vịt Số 7", icon: "🦆🟤" },
             { id: 8, name: "Vịt Số 8", icon: "🦆⚫" }
         ];
+
+        // Dùng vòng lặp gán giá trị số tự động để hệ thống AI không thể nuốt mất dấu của mảng
+        ducks.forEach(duck => {
+            positions[duck.id] = 10;
+        });
 
         let raceInterval = null;
         let isRacing = false;
@@ -287,12 +292,10 @@
                     duckEl.classList.add('running');
                 }
                 
-                const laneEl = document.getElementById(`lane-${duck.id}`);
-                if (laneEl) laneEl.classList.remove('leading');
-                
-                positions[duck.id] = 10;
-            });
-
+const laneEl = document.getElementById(lane-${duck.id});
+if (laneEl) laneEl.classList.remove('leading');
+positions[duck.id] = 10;
+});
 isRacing = true;
 this.disabled = true;
 startTime = performance.now();
@@ -304,10 +307,8 @@ let leadingPosition = -1;
 let leaderId = null;
 let winner = null;
 ducks.forEach(duck => {
-// Phép cộng số chuẩn xác tuyệt đối
-const currentPos = positions[duck.id];
-const nextStep = Math.floor(Math.random() * 6) + 2;
-positions[duck.id] = currentPos + nextStep;
+// Xử lý phép tính cộng dồn pixel chuẩn xác
+positions[duck.id] = positions[duck.id] + Math.floor(Math.random() * 6) + 2;
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
 duckEl.style.left = positions[duck.id] + "px";
@@ -318,8 +319,10 @@ leaderId = duck.id;
 }
 if (positions[duck.id] >= finishLinePosition && !winner) {
 winner = { ...duck };
-if(namesArray[duck.id - 1]) {
-winner.name = namesArray[duck.id - 1];
+const currentNamesInput = document.getElementById('names-input').value;
+const currentNamesArray = currentNamesInput.split(',').map(name => name.trim()).filter(name => name !== "");
+if(currentNamesArray[duck.id - 1]) {
+winner.name = currentNamesArray[duck.id - 1];
 }
 }
 });
