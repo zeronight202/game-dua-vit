@@ -27,13 +27,12 @@
             font-size: 24px;
             font-weight: 800;
             letter-spacing: 1.5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         #race-track {
             background-color: #0288d1; 
             border: 4px solid #01579b;
-            border-radius: 16px; /* Bo tròn góc đường đua hiện đại hơn */
+            border-radius: 16px;
             padding: 12px;
             width: 100%;
             max-width: 900px;
@@ -45,7 +44,6 @@
             height: 75px; 
             border-bottom: 2px dashed rgba(224, 247, 250, 0.6); 
             position: relative;
-            /* CẢI TIẾN AN TOÀN: Hiệu ứng gradient màu nước biển sâu lấp lánh */
             background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
             width: 100%;
         }
@@ -67,9 +65,9 @@
         }
 
         .duck-avatar {
-            font-size: 32px; /* Tăng nhẹ kích thước vịt cho rõ nét */
+            font-size: 32px;
             display: inline-block;
-            transform: scaleX(-1); /* Lật vịt quay mặt sang phải */
+            transform: scaleX(-1); /* Quay vịt sang phải */
         }
 
         .duck-name {
@@ -127,7 +125,6 @@
             box-shadow: 0 4px 10px rgba(255, 87, 34, 0.15);
         }
 
-        /* CẢI TIẾN AN TOÀN: Nút bấm hiệu ứng 3D mượt mà */
         button {
             padding: 14px 45px;
             background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
@@ -160,13 +157,12 @@
             transform: none;
         }
 
-        /* CẢI TIẾN AN TOÀN: Thiết kế Pop-up vinh danh rực rỡ hơn kèm hiệu ứng xuất hiện phóng to */
         #victory-modal {
             display: none; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px); /* Làm mờ nhẹ nền phía sau */
+            backdrop-filter: blur(4px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -236,7 +232,8 @@
     </div>
 
     <script>
-        let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
+        // Bản vị trí số chuẩn xác đã loại bỏ hoàn toàn mã lỗi
+        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
         let raceInterval = null;
         let isRacing = false;
 
@@ -270,12 +267,14 @@
             raceInterval = setInterval(() => {
                 let winnerId = null;
 
-for (let i = 1; i <= 8; i++) {
-positions[i] += Math.floor(Math.random() * 6) + 2;
-const duckEl = document.getElementById(duck-${i});
-if (duckEl) {
-duckEl.style.left = positions[i] + "px";
-}
+                for (let i = 1; i <= 8; i++) {
+                    positions[i] += Math.floor(Math.random() * 6) + 2; 
+                    
+                    const duckEl = document.getElementById(`duck-${i}`);
+                    if (duckEl) {
+                        duckEl.style.left = positions[i] + "px"; // Khôi phục dòng lệnh mượt 100%
+                    }
+
 if (positions[i] >= finishLinePosition && !winnerId) {
 winnerId = i;
 }
