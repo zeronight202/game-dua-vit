@@ -160,7 +160,7 @@
             cursor: not-allowed;
         }
 
-        /* Khung thông báo kết quả */
+        /* Modal popup thông báo kết quả */
         #victory-modal {
             display: none;
             position: fixed;
@@ -229,7 +229,7 @@
     <h2>💥 GIẢI ĐUA VỊT NGOẠI HẠNG QUACK-RACING 💥</h2>
 
     <div id="race-track">
-        <!-- Làn đua sinh tự động -->
+        <!-- Làn đua tự sinh qua JavaScript -->
     </div>
 
     <div class="controls">
@@ -237,7 +237,6 @@
         <button id="btn-start">Bắt đầu đua!</button>
     </div>
 
-    <!-- Cửa sổ pop-up chúc mừng cán đích -->
     <div id="victory-modal">
         <div class="modal-content">
             <h2 style="color: #ff5722; font-size: 28px; margin-bottom: 5px;">🏆 CHIẾN THẮNG 🏆</h2>
@@ -253,7 +252,7 @@
         const ducks = [
             { id: 1, name: "Vịt Số 1" },
             { id: 2, name: "Vịt Số 2" },
-            { id: 3, name: "Vịt Số 3" },
+            { id: 3, name: "Vịt Số 4" },
             { id: 4, name: "Vịt Số 4" },
             { id: 5, name: "Vịt Số 5" },
             { id: 6, name: "Vịt Số 6" },
@@ -286,8 +285,8 @@
                 avatarSpan.className = 'duck-avatar';
                 avatarSpan.innerText = '🦆';
                 
-                // Thuật toán gán màu tự động theo vị trí làn đua (không dùng mảng số, an toàn 100%)
-                const angle = index * 40;
+                // Đổi góc màu tự động bằng công thức toán học tránh lỗi hệ thống ẩn chữ
+                const angle = index * 45;
                 avatarSpan.style.filter = "hue-rotate(" + angle + "deg)";
 
                 const nameSpan = document.createElement('span');
@@ -327,7 +326,8 @@
 
             isRacing = true;
             this.disabled = true;
-startTime = performance.now();
+            startTime = performance.now();
+
 const trackWidth = trackContainer.clientWidth;
 const finishLinePosition = trackWidth - 140;
 raceInterval = setInterval(() => {
