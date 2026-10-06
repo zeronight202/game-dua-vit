@@ -66,7 +66,7 @@
         .duck-avatar {
             font-size: 30px;
             display: inline-block;
-            transform: scaleX(-1); /* Quay vịt sang phải */
+            transform: scaleX(-1); 
         }
 
         .duck-name {
@@ -128,6 +128,37 @@
             text-transform: uppercase;
         }
 
+        /* Giao diện Bảng xếp hạng bên dưới đường đua */
+        #leaderboard-container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        #leaderboard-container h3 {
+            margin: 0 0 15px 0;
+            color: #0288d1;
+            font-size: 18px;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .score-row:last-child {
+            border-bottom: none;
+        }
+
         #victory-modal {
             display: none; 
             position: fixed;
@@ -167,7 +198,7 @@
 
     <div id="race-track">
         <div class="lane" id="lane-1"><div class="finish-line-marker"></div><div class="duck" id="duck-1"><span class="duck-avatar">🦆🟡</span><span class="duck-name" id="name-1">Vịt Số 1</span></div></div>
-        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name" id="name-2">Vịt Số 2</span></div></div>
+        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name">Vịt Số 2</span></div></div>
         <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3"><span class="duck-avatar">🦆🔵</span><span class="duck-name" id="name-3">Vịt Số 3</span></div></div>
         <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4"><span class="duck-avatar">🦆🔴</span><span class="duck-name" id="name-4">Vịt Số 4</span></div></div>
         <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5"><span class="duck-avatar">🦆🟣</span><span class="duck-name" id="name-5">Vịt Số 5</span></div></div>
@@ -181,6 +212,15 @@
         <button id="btn-start">Bắt đầu đua!</button>
     </div>
 
+    <!-- Khung hiển thị Bảng xếp hạng -->
+    <div id="leaderboard-container">
+        <h3>🏆 BẢNG XẾP HẠNG THẮNG CUỘC 🏆</h3>
+        <div id="leaderboard-rows">
+            <!-- Dữ liệu điểm số sẽ tự sinh ra ở đây -->
+        </div>
+        <button id="btn-reset-score" style="padding: 5px 15px; font-size: 11px; margin-top: 15px; background-color: #b0bec5; border-radius: 10px;">Xoá lịch sử điểm</button>
+    </div>
+
     <div id="victory-modal">
         <div class="modal-content">
             <h2 style="color: #ff5722; font-size: 26px; margin: 0;">🏆 CHIẾN THẮNG 🏆</h2>
@@ -190,10 +230,33 @@
     </div>
 
     <script>
-        // Sử dụng Object tường minh lưu vị trí số nguyên để loại bỏ hoàn toàn lỗi
         let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
         let raceInterval = null;
         let isRacing = false;
+
+        // Khởi tạo hoặc nạp điểm số từ bộ nhớ trình duyệt LocalStorage
+        let scores = JSON.parse(localStorage.getItem('quack_racing_scores')) || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+
+        const duckIcons = { 1: "🦆🟡", 2: "🦆🟢", 3: "🦆🔵", 4: "🦆🔴", 5: "🦆🟣", 6: "🦆🟠", 7: "🦆🟤", 8: "🦆⚫" };
+
+        // Hàm cập nhật và hiển thị bảng xếp hạng ra màn hình
+        function updateLeaderboardUI() {
+            const rowsContainer = document.getElementById('leaderboard-rows');
+            rowsContainer.innerHTML = '';
+
+            // Sắp xếp thứ tự bầy vịt từ thắng nhiều nhất đến ít nhất
+            let sortedDucks = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+
+            sortedDucks.forEach(id => {
+                const row = document.createElement('div');
+                row.className = 'score-row';
+                row.innerHTML = `<span>${duckIcons[id]} Làn số ${id}</span> <span><b>${scores[id]}</b> trận thắng</span>`;
+                rowsContainer.appendChild(row);
+            });
+        }
+        
+        // Gọi hiển thị bảng điểm ngay khi tải trang
+        updateLeaderboardUI();
 
         document.getElementById('btn-start').addEventListener("click", function() {
             if (isRacing) return;
@@ -203,7 +266,6 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
-            // Gán tên người chơi và reset vị trí xuất phát ban đầu
             for (let i = 1; i <= 8; i++) {
                 positions[i] = 10;
                 
@@ -216,54 +278,54 @@
                 }
             }
 
-            isRacing = true;
-            this.disabled = true;
-
-            const trackContainer = document.getElementById('race-track');
-            const trackWidth = trackContainer.clientWidth || 900;
-            const finishLinePosition = trackWidth - 140; 
-
-            raceInterval = setInterval(() => {
-                let winnerId = null;
-
-                for (let i = 1; i <= 8; i++) {
-                    positions[i] += Math.floor(Math.random() * 6) + 2; 
-                    
-                    const duckEl = document.getElementById(`duck-${i}`);
-                    if (duckEl) {
-                        duckEl.style.left = positions[i] + "px"; // Khôi phục dòng lệnh mượt 100%
-                    }
-
-                    if (positions[i] >= finishLinePosition && !winnerId) {
-                        winnerId = i;
-                    }
-                }
-
-                if (winnerId) {
-                    clearInterval(raceInterval);
-                    isRacing = false;
-                    document.getElementById('btn-start').disabled = false;
-
-                    const currentNameEl = document.getElementById(`name-${winnerId}`);
-                    let winnerName = currentNameEl ? currentNameEl.innerText : `Vịt Số ${winnerId}`;
-
-                    setTimeout(() => {
-                        const modal = document.getElementById('victory-modal');
-                        document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
-                        modal.style.display = 'flex';
-                    }, 50);
-                }
-            }, 40);
-        });
-
-        document.getElementById('btn-close-modal').addEventListener('click', function() {
-            document.getElementById('victory-modal').style.display = 'none';
-            for (let i = 1; i <= 8; i++) {
-                const duckEl = document.getElementById(`duck-${i}`);
-                if (duckEl) duckEl.style.left = '10px';
-                positions[i] = 10;
-            }
-        });
-    </script>
-</body>
-</html>
+isRacing = true;
+this.disabled = true;
+const trackContainer = document.getElementById('race-track');
+const trackWidth = trackContainer.clientWidth || 900;
+const finishLinePosition = trackWidth - 140;
+raceInterval = setInterval(() => {
+let winnerId = null;
+for (let i = 1; i <= 8; i++) {
+positions[i] += Math.floor(Math.random() * 6) + 2;
+const duckEl = document.getElementById(duck-${i});
+if (duckEl) {
+duckEl.style.left = positions[i] + "px";
+}
+if (positions[i] >= finishLinePosition && !winnerId) {
+winnerId = i;
+}
+}
+if (winnerId) {
+clearInterval(raceInterval);
+isRacing = false;
+document.getElementById('btn-start').disabled = false;
+// Cộng điểm và lưu lại vào bộ nhớ LocalStorage
+scores[winnerId] += 1;
+localStorage.setItem('quack_racing_scores', JSON.stringify(scores));
+updateLeaderboardUI(); // Cập nhật lại giao diện bảng điểm
+const currentNameEl = document.getElementById(name-${winnerId});
+let winnerName = currentNameEl ? currentNameEl.innerText : Vịt Số ${winnerId};
+setTimeout(() => {
+const modal = document.getElementById('victory-modal');
+document.getElementById('modal-message').innerText = Chúc mừng [ ${winnerName} ] đã giành chiến thắng!;
+modal.style.display = 'flex';
+}, 50);
+}
+}, 40);
+});
+document.getElementById('btn-close-modal').addEventListener('click', function() {
+document.getElementById('victory-modal').style.display = 'none';
+for (let i = 1; i <= 8; i++) {
+const duckEl = document.getElementById(duck-${i});
+if (duckEl) duckEl.style.left = '10px';
+positions[i] = 10;
+}
+});
+// Hàm reset điểm số về 0 khi muốn chơi giải đấu mới
+document.getElementById('btn-reset-score').addEventListener('click', function() {
+if(confirm("Bạn có chắc chắn muốn reset toàn bộ điểm số bảng xếp hạng về 0 không?")) {
+scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+localStorage.setItem('quack_racing_scores', JSON.stringify(scores));
+updateLeaderboardUI();
+}
+});
