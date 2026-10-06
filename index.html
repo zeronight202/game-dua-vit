@@ -44,7 +44,6 @@
             border-bottom: 2px dashed #81c784;
             position: relative;
             background-color: #c8e6c9;
-            transition: background-color 0.2s ease;
             width: 100%;
         }
 
@@ -110,7 +109,7 @@
             text-transform: uppercase;
         }
 
-        /* Khung thông báo kết quả Pop-up đơn giản */
+        /* Giao diện khung Pop-up kết quả đơn giản */
         #victory-modal {
             display: none; 
             position: fixed;
@@ -128,6 +127,7 @@
             text-align: center;
             max-width: 400px;
             width: 90%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         #btn-close-modal {
@@ -141,7 +141,7 @@
             font-weight: bold;
             margin-top: 15px;
         }
-    </script>
+    </style>
 </head>
 <body>
 
@@ -149,12 +149,12 @@
 
     <div id="race-track">
         <div class="lane" id="lane-1"><div class="finish-line-marker"></div><div class="duck" id="duck-1">🦆🟡</div></div>
-        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><div class="duck" id="duck-2">🦆🟢</div></div></div>
+        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2">🦆🟢</div></div>
         <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3">🦆🔵</div></div>
         <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4">🦆🔴</div></div>
         <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5">🦆🟣</div></div>
         <div class="lane" id="lane-6"><div class="finish-line-marker"></div><div class="duck" id="duck-6">🦆🟠</div></div>
-        <div class="lane" id="lane-7"><div class="finish-line-marker"></div><div class="duck" id="duck-7">🦆 🟤</div></div>
+        <div class="lane" id="lane-7"><div class="finish-line-marker"></div><div class="duck" id="duck-7">🦆🟤</div></div>
         <div class="lane" id="lane-8"><div class="finish-line-marker"></div><div class="duck" id="duck-8">🦆⚫</div></div>
     </div>
 
@@ -163,24 +163,25 @@
         <button id="btn-start">Bắt đầu đua!</button>
     </div>
 
-    <!-- Hộp thoại chúc mừng -->
+    <!-- Cửa sổ bật lên khi có vịt thắng cuộc -->
     <div id="victory-modal">
         <div class="modal-content">
-            <h2 style="color: #ff5722; font-size: 26px;">🏆 CHIẾN THẮNG 🏆</h2>
-            <p id="modal-message" style="font-size: 18px; font-weight: bold; margin: 15px 0; color: #333;"></p>
+            <h2 style="color: #ff5722; font-size: 26px; margin: 0;">🏆 CHIẾN THẮNG 🏆</h2>
+            <p id="modal-message" style="font-size: 18px; font-weight: bold; margin: 20px 0; color: #333;"></p>
             <button id="btn-close-modal">Đua tiếp</button>
         </div>
     </div>
 
     <script>
-        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
+        // Khởi tạo vị trí ban đầu (dùng Object để tránh hoàn toàn lỗi cú pháp nuốt ký tự)
+        let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
         let raceInterval = null;
         let isRacing = false;
 
         document.getElementById('btn-start').addEventListener("click", function() {
             if (isRacing) return;
 
-            // Reset vị trí xuất phát ban đầu
+            // Reset tất cả các chú vịt về vạch xuất phát ban đầu
             for (let i = 1; i <= 8; i++) {
                 positions[i] = 10;
                 const duckEl = document.getElementById(`duck-${i}`);
@@ -197,6 +198,7 @@
             raceInterval = setInterval(() => {
                 let winnerId = null;
 
+                // Vòng lặp cập nhật di chuyển ngẫu nhiên cho vịt
                 for (let i = 1; i <= 8; i++) {
                     positions[i] += Math.floor(Math.random() * 6) + 2; 
                     
@@ -205,22 +207,24 @@
                         duckEl.style.left = positions[i] + "px";
                     }
 
+                    // Tìm vịt chạm vạch đích
                     if (positions[i] >= finishLinePosition && !winnerId) {
                         winnerId = i;
                     }
                 }
 
+                // Xử lý khi có vịt thắng cuộc
                 if (winnerId) {
                     clearInterval(raceInterval);
                     isRacing = false;
                     document.getElementById('btn-start').disabled = false;
 
-                    // Lấy tên tùy biến nếu có nhập ô input
+                    // Lấy tên từ ô nhập liệu nếu có
                     const inputNames = document.getElementById('names-input').value;
                     const namesArray = inputNames.split(',').map(name => name.trim()).filter(name => name !== "");
                     let winnerName = namesArray[winnerId - 1] || `Vịt Số ${winnerId}`;
 
-                    // Hiển thị Pop-up thay cho hàm alert
+                    // Hiện bảng Pop-up chúc mừng kết quả
                     setTimeout(() => {
                         const modal = document.getElementById('victory-modal');
                         document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
@@ -230,7 +234,7 @@
             }, 40);
         });
 
-        // Đóng hộp thoại khi nhấn nút Đua tiếp
+        // Xử lý nút Đua tiếp để ẩn Pop-up
         document.getElementById('btn-close-modal').addEventListener('click', function() {
             document.getElementById('victory-modal').style.display = 'none';
             for (let i = 1; i <= 8; i++) {
