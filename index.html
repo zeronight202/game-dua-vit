@@ -63,7 +63,7 @@
             align-items: center;
         }
 
-        /* THÊM MỚI: Hiệu ứng lắc lư, ngoáy đuôi khi bơi bơi */
+        /* Hiệu ứng lắc lư khi bơi bơi */
         @keyframes swimWaddle {
             0% { transform: scaleX(-1) rotate(0deg); }
             25% { transform: scaleX(-1) rotate(-8deg); }
@@ -72,7 +72,6 @@
             100% { transform: scaleX(-1) rotate(0deg); }
         }
 
-        /* Khi JavaScript thêm class "swimming", hoạt ảnh lắc lư bơi lội sẽ được kích hoạt */
         .duck.swimming .duck-avatar {
             animation: swimWaddle 0.25s infinite linear;
         }
@@ -80,7 +79,7 @@
         .duck-avatar {
             font-size: 30px;
             display: inline-block;
-            transform: scaleX(-1); /* Mặc định lật vịt quay sang phải */
+            transform: scaleX(-1); /* Lật vịt quay mặt sang phải */
         }
 
         .duck-name {
@@ -223,7 +222,7 @@
                 const duckEl = document.getElementById(`duck-${i}`);
                 if (duckEl) {
                     duckEl.style.left = '10px';
-                    duckEl.classList.add('swimming'); // BẬT hoạt ảnh lắc lư khi xuất phát
+                    duckEl.classList.add('swimming'); 
                 }
 
                 const nameEl = document.getElementById(`name-${i}`);
@@ -247,7 +246,7 @@
                     
                     const duckEl = document.getElementById(`duck-${i}`);
                     if (duckEl) {
-                        duckEl.style.left = positions[i] + "px";
+                        duckEl.style.left = positions[i] + "px"; // Đã sửa sạch sẽ lỗi dính chữ
                     }
 
                     if (positions[i] >= finishLinePosition && !winnerId) {
@@ -260,7 +259,6 @@
                     isRacing = false;
                     document.getElementById('btn-start').disabled = false;
 
-                    // TẮT hoạt ảnh lắc lư của bầy vịt khi cuộc đua kết thúc
                     for (let i = 1; i <= 8; i++) {
                         const duckEl = document.getElementById(`duck-${i}`);
                         if (duckEl) duckEl.classList.remove('swimming');
@@ -270,21 +268,6 @@
                     let winnerName = currentNameEl ? currentNameEl.innerText : `Vịt Số ${winnerId}`;
 
                     setTimeout(() => {
-const modal = document.getElementById('victory-modal');
-document.getElementById('modal-message').innerText = Chúc mừng [ ${winnerName} ] đã giành chiến thắng!;
-modal.style.display = 'flex';
-}, 50);
-}
-}, 40);
-});
-document.getElementById('btn-close-modal').addEventListener('click', function() {
-document.getElementById('victory-modal').style.display = 'none';
-for (let i = 1; i <= 8; i++) {
-const duckEl = document.getElementById(duck-${i});
-if (duckEl) {
-duckEl.style.left = '10px';
-duckEl.classList.remove('swimming'); // Reset trạng thái đứng yên
-}
-positions[i] = 10;
-}
-});
+                        const modal = document.getElementById('victory-modal');
+                        document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
+                        modal.style.display = 'flex';
