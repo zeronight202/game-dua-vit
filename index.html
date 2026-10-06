@@ -253,8 +253,8 @@
     </div>
 
     <script>
-        // Khởi tạo mảng số lưu vị trí pixel di chuyển độc lập
-        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
+        // Khởi tạo mảng vị trí số chuẩn xác cho 9 phần tử để tương thích id từ 1 đến 8
+        let positions =;
         
         const ducks = [
             { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
@@ -303,7 +303,6 @@ let leadingPosition = -1;
 let leaderId = null;
 let winner = null;
 ducks.forEach(duck => {
-// Cộng dồn pixel ngẫu nhiên chuẩn toán học
 positions[duck.id] += Math.floor(Math.random() * 6) + 2;
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
