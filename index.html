@@ -105,7 +105,7 @@
             width: 15px;
             background-image: linear-gradient(45deg, #000 25%, transparent 25%),
                               linear-gradient(-45deg, #000 25%, transparent 25%),
-                              gradient(45deg, transparent 75%, #000 75%),
+                              linear-gradient(45deg, transparent 75%, #000 75%),
                               linear-gradient(-45deg, transparent 75%, #000 75%);
             background-size: 10px 10px;
             background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
@@ -160,7 +160,7 @@
             cursor: not-allowed;
         }
 
-        /* Modal popup thông báo */
+        /* Bảng Modal chúc mừng */
         #victory-modal {
             display: none;
             position: fixed;
@@ -229,7 +229,7 @@
     <h2>💥 GIẢI ĐUA VỊT NGOẠI HẠNG QUACK-RACING 💥</h2>
 
     <div id="race-track">
-        <!-- Làn đua tự tạo ở đây -->
+        <!-- JS tự động render các làn đua tại đây -->
     </div>
 
     <div class="controls">
@@ -306,9 +306,6 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
-            // Đã fix lỗi: Mảng chứa 8 giá trị góc màu rõ ràng không bị bỏ trống
-            const hueAngles =;
-
             ducks.forEach((duck, index) => {
                 const duckEl = document.getElementById(`duck-${duck.id}`);
                 if (duckEl) {
@@ -318,16 +315,17 @@
                     
                     const avatarEl = duckEl.querySelector('.duck-avatar');
                     if (avatarEl) {
-                        avatarEl.style.filter = `hue-rotate(${hueAngles[index]}deg)`;
+                        // Đã sửa triệt để lỗi: Dùng công thức toán học thay thế hoàn toàn mảng lỗi
+                        const calculatedAngle = index * 45;
+                        avatarEl.style.filter = "hue-rotate(" + calculatedAngle + "deg)";
                     }
                 }
                 
                 const laneEl = document.getElementById(`lane-${duck.id}`);
                 if (laneEl) laneEl.classList.remove('leading');
                 
-                positions[duck.id] = 10;
-            });
-
+positions[duck.id] = 10;
+});
 isRacing = true;
 this.disabled = true;
 startTime = performance.now();
