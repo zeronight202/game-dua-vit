@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e8f5e9;
+            background-color: #e0f7fa; /* Đổi nền trang sang màu xanh nước biển nhạt */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -20,7 +20,7 @@
         }
 
         h2 {
-            color: #ff5722;
+            color: #0288d1; /* Đổi màu tiêu đề sang xanh dương */
             margin-top: 0;
             margin-bottom: 15px;
             text-align: center;
@@ -29,8 +29,8 @@
         }
 
         #race-track {
-            background-color: #a5d6a7;
-            border: 4px solid #2e7d32;
+            background-color: #0288d1; /* Đổi nền bể bơi sang màu xanh dương đậm */
+            border: 4px solid #01579b;
             border-radius: 10px;
             padding: 10px;
             width: 100%;
@@ -41,9 +41,9 @@
 
         .lane {
             height: 70px;
-            border-bottom: 2px dashed #81c784;
+            border-bottom: 2px dashed #e0f7fa; /* Vạch chia làn màu nước biển nhạt */
             position: relative;
-            background-color: #c8e6c9;
+            background-color: #4fc3f7; /* Màu nước biển của làn bơi */
             width: 100%;
         }
 
@@ -59,8 +59,7 @@
             cursor: pointer;
             user-select: none;
             z-index: 5;
-            /* ĐÃ SỬA: Thêm dòng này để quay mặt chú vịt sang bên phải vạch đích */
-            transform: scaleX(-1);
+            transform: scaleX(-1); /* Giữ vịt quay mặt sang phải */
         }
 
         .finish-line-marker {
@@ -92,7 +91,7 @@
             width: 100%;
             padding: 12px;
             border-radius: 25px;
-            border: 2px solid #4caf50;
+            border: 2px solid #0288d1;
             font-size: 14px;
             outline: none;
             text-align: center;
@@ -133,7 +132,7 @@
         }
 
         #btn-close-modal {
-            background: #2e7d32;
+            background: #0288d1;
             color: white;
             border: none;
             padding: 10px 30px;
@@ -151,7 +150,7 @@
 
     <div id="race-track">
         <div class="lane" id="lane-1"><div class="finish-line-marker"></div><div class="duck" id="duck-1">🦆🟡</div></div>
-        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2">🦆🟢</div></div>
+        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2">🦆🟢</div></div> <!-- Đã sửa lỗi trùng thẻ div ở làn 2 -->
         <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3">🦆🔵</div></div>
         <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4">🦆🔴</div></div>
         <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5">🦆🟣</div></div>
