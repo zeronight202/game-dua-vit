@@ -253,8 +253,8 @@
     </div>
 
     <script>
-        // SỬA LỖI TRIỆT ĐỂ: Khởi tạo đối tượng positions rỗng trước
-        let positions = {};
+        // Khởi tạo mảng số lưu vị trí pixel di chuyển độc lập
+        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
         
         const ducks = [
             { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
@@ -266,11 +266,6 @@
             { id: 7, name: "Vịt Số 7", icon: "🦆🟤" },
             { id: 8, name: "Vịt Số 8", icon: "🦆⚫" }
         ];
-
-        // Dùng vòng lặp gán giá trị số tự động để hệ thống AI không thể nuốt mất dấu của mảng
-        ducks.forEach(duck => {
-            positions[duck.id] = 10;
-        });
 
         let raceInterval = null;
         let isRacing = false;
@@ -292,8 +287,9 @@
                     duckEl.classList.add('running');
                 }
                 
-const laneEl = document.getElementById(lane-${duck.id});
-if (laneEl) laneEl.classList.remove('leading');
+                const laneEl = document.getElementById(`lane-${duck.id}`);
+                if (laneEl) laneEl.classList.remove('leading');
+                
 positions[duck.id] = 10;
 });
 isRacing = true;
@@ -307,8 +303,8 @@ let leadingPosition = -1;
 let leaderId = null;
 let winner = null;
 ducks.forEach(duck => {
-// Xử lý phép tính cộng dồn pixel chuẩn xác
-positions[duck.id] = positions[duck.id] + Math.floor(Math.random() * 6) + 2;
+// Cộng dồn pixel ngẫu nhiên chuẩn toán học
+positions[duck.id] += Math.floor(Math.random() * 6) + 2;
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
 duckEl.style.left = positions[duck.id] + "px";
@@ -319,10 +315,8 @@ leaderId = duck.id;
 }
 if (positions[duck.id] >= finishLinePosition && !winner) {
 winner = { ...duck };
-const currentNamesInput = document.getElementById('names-input').value;
-const currentNamesArray = currentNamesInput.split(',').map(name => name.trim()).filter(name => name !== "");
-if(currentNamesArray[duck.id - 1]) {
-winner.name = currentNamesArray[duck.id - 1];
+if(namesArray[duck.id - 1]) {
+winner.name = namesArray[duck.id - 1];
 }
 }
 });
