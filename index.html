@@ -60,7 +60,6 @@
             position: absolute;
             left: 10px;
             top: 2px;
-            /* ĐÃ SỬA: Loại bỏ transition: left để vịt di chuyển mượt mà theo setInterval */
             cursor: pointer;
             user-select: none;
             display: flex;
@@ -69,7 +68,6 @@
             z-index: 5;
         }
 
-        /* Hiệu ứng vịt lắc lư nghiêng qua nghiêng lại khi chạy */
         @keyframes waddle {
             0% { transform: scale(-1, 1) rotate(0deg); }
             25% { transform: scale(-1, 1) rotate(-10deg); }
@@ -162,7 +160,6 @@
             cursor: not-allowed;
         }
 
-        /* Modal popup thông báo kết quả */
         #victory-modal {
             display: none;
             position: fixed;
@@ -230,7 +227,6 @@
     <h2>💥 GIẢI ĐUA VỊT NGOẠI HẠNG QUACK-RACING 💥</h2>
 
     <div id="race-track">
-        <!-- 8 Làn đua cố định hiển thị ngay lập tức khi tải trang -->
         <div class="lane" id="lane-1"><div class="finish-line-marker"></div><div class="duck" id="duck-1"><span class="duck-avatar">🦆🟡</span><span class="duck-name">Vịt Số 1</span></div></div>
         <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name">Vịt Số 2</span></div></div>
         <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3"><span class="duck-avatar">🦆🔵</span><span class="duck-name">Vịt Số 3</span></div></div>
@@ -257,18 +253,17 @@
     </div>
 
     <script>
-        // Thiết lập vị trí pixel xuất phát ban đầu cho từng vịt
-        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
+        let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
         
         const ducks = [
-            { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
-            { id: 2, name: "Vịt Số 2", icon: "🦆🟢" },
-            { id: 3, name: "Vịt Số 3", icon: "🦆🔵" },
-            { id: 4, name: "Vịt Số 4", icon: "🦆🔴" },
-            { id: 5, name: "Vịt Số 5", icon: "🦆🟣" },
-            { id: 6, name: "Vịt Số 6", icon: "🦆🟠" },
-            { id: 7, name: "Vịt Số 7", icon: "🦆🟤" },
-            { id: 8, name: "Vịt Số 8", icon: "🦆⚫" }
+            { id: "1", name: "Vịt Số 1", icon: "🦆🟡" },
+            { id: "2", name: "Vịt Số 2", icon: "🦆🟢" },
+            { id: "3", name: "Vịt Số 3", icon: "🦆🔵" },
+            { id: "4", name: "Vịt Số 4", icon: "🦆🔴" },
+            { id: "5", name: "Vịt Số 5", icon: "🦆🟣" },
+            { id: "6", name: "Vịt Số 6", icon: "🦆🟠" },
+            { id: "7", name: "Vịt Số 7", icon: "🦆🟤" },
+            { id: "8", name: "Vịt Số 8", icon: "🦆⚫" }
         ];
 
         let raceInterval = null;
@@ -283,50 +278,48 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
-            // Reset trạng thái ban đầu khi bắt đầu nhấn nút chạy
             ducks.forEach((duck, index) => {
                 const duckEl = document.getElementById(`duck-${duck.id}`);
                 if (duckEl) {
-duckEl.querySelector('.duck-name').innerText = namesArray[index] || duck.name;
-duckEl.style.left = '10px';
-duckEl.classList.add('running'); // Kích hoạt animation lắc lư
-}
-const laneEl = document.getElementById(lane-${duck.id});
-if (laneEl) laneEl.classList.remove('leading');
-positions[duck.id] = 10;
-});
+                    duckEl.querySelector('.duck-name').innerText = namesArray[index] || duck.name;
+                    duckEl.style.left = '10px';
+                    duckEl.classList.add('running');
+                }
+                
+                const laneEl = document.getElementById(`lane-${duck.id}`);
+                if (laneEl) laneEl.classList.remove('leading');
+                
+                positions[duck.id] = 10;
+            });
 isRacing = true;
 this.disabled = true;
 startTime = performance.now();
 const trackContainer = document.getElementById('race-track');
 const trackWidth = trackContainer.clientWidth || 900;
-// Vị trí vạch đích tính từ cạnh trái đường đua
 const finishLinePosition = trackWidth - 140;
 raceInterval = setInterval(() => {
 let leadingPosition = -1;
 let leaderId = null;
 let winner = null;
 ducks.forEach(duck => {
-// Tăng tiến vị trí ngẫu nhiên liên tục
 positions[duck.id] += Math.floor(Math.random() * 6) + 2;
 const duckEl = document.getElementById(duck-${duck.id});
 if (duckEl) {
 duckEl.style.left = positions[duck.id] + "px";
 }
-// Tìm chú vịt đang dẫn đầu đường đua
 if (positions[duck.id] > leadingPosition) {
 leadingPosition = positions[duck.id];
 leaderId = duck.id;
 }
-// Điều kiện bắt được vịt cán đích đầu tiên
 if (positions[duck.id] >= finishLinePosition && !winner) {
 winner = { ...duck };
-if(namesArray[duck.id - 1]) {
-winner.name = namesArray[duck.id - 1];
+const currentNamesInput = document.getElementById('names-input').value;
+const currentNamesArray = currentNamesInput.split(',').map(name => name.trim()).filter(name => name !== "");
+if(currentNamesArray[parseInt(duck.id) - 1]) {
+winner.name = currentNamesArray[parseInt(duck.id) - 1];
 }
 }
 });
-// Cập nhật đổi màu nền làn đua của vịt dẫn đầu
 ducks.forEach(duck => {
 const laneEl = document.getElementById(lane-${duck.id});
 if (laneEl) {
@@ -337,7 +330,6 @@ laneEl.classList.remove('leading');
 }
 }
 });
-// Khi có vịt chiến thắng cán đích
 if (winner) {
 clearInterval(raceInterval);
 isRacing = false;
@@ -348,7 +340,6 @@ if (duckEl) duckEl.classList.remove('running');
 });
 const endTime = performance.now();
 const totalTime = ((endTime - startTime) / 1000).toFixed(2);
-// Hiển thị Pop-up Modal chúc mừng xịn sò
 setTimeout(() => {
 const modal = document.getElementById('victory-modal');
 const modalAvatar = document.getElementById('modal-avatar');
@@ -360,9 +351,8 @@ modalTime.innerText = ⏱️ Thời gian chạy kỷ lục: ${totalTime} giây;
 modal.style.display = 'flex';
 }, 50);
 }
-}, 40); // Tốc độ cập nhật khung hình 40ms mượt mà
+}, 40);
 });
-// Đóng modal kết quả và reset vị trí bầy vịt về vạch xuất phát
 document.getElementById('btn-close-modal').addEventListener('click', function() {
 document.getElementById('victory-modal').style.display = 'none';
 ducks.forEach(duck => {
