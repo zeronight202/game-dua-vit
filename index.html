@@ -189,8 +189,9 @@
         </div>
     </div>
 
-    <!-- THÊM MỚI: Thẻ nhạc nền lấy từ link audio trực tuyến công cộng -->
-    <audio id="bg-music" loop>
+    <!-- Nhạc nền phong cách 8-bit game retro siêu đơn giản và nhẹ -->
+    <audio id="bg-music" loop prefetch>
+        <source src="https://google.com" type="audio/ogg">
         <source src="https://soundhelix.com" type="audio/mp3">
     </audio>
 
@@ -202,14 +203,11 @@
         document.getElementById('btn-start').addEventListener("click", function() {
             if (isRacing) return;
 
-            // PHÁT NHẠC: Khởi động phát nhạc nền vui nhộn khi cuộc đua chạy
             const music = document.getElementById('bg-music');
             if (music) {
-                music.currentTime = 0; // Chạy lại từ giây thứ 0 cho công bằng
-                music.volume = 0.3;    // Giới hạn âm lượng vừa phải (30%) không bị chói tai
-                music.play().catch(error => {
-                    console.log("Trình duyệt chặn tự động phát trước khi tương tác:", error);
-                });
+                music.currentTime = 0; 
+                music.volume = 0.2; // Để âm lượng 20% nghe rất vừa vặn
+                music.play().catch(e => console.log("Chờ tương tác để phát nhạc"));
             }
 
             const inputNames = document.getElementById('names-input').value;
@@ -244,7 +242,7 @@
                     
                     const duckEl = document.getElementById(`duck-${i}`);
                     if (duckEl) {
-                        duckEl.style.left = positions[duck[i] ? positions[i] : positions[i]] + "px";
+                        duckEl.style.left = positions[i] + "px"; // ĐÃ SỬA: Sửa lại toạ độ gán pixel chuẩn 100%
                     }
 
                     if (positions[i] >= finishLinePosition && !winnerId) {
@@ -257,7 +255,6 @@
                     isRacing = false;
                     document.getElementById('btn-start').disabled = false;
 
-                    // DỪNG NHẠC: Tạm dừng phát nhạc nền ngay khi có người cán đích thắng cuộc
                     if (music) music.pause();
 
                     const currentNameEl = document.getElementById(`name-${winnerId}`);
@@ -266,12 +263,13 @@
                     setTimeout(() => {
                         const modal = document.getElementById('victory-modal');
                         document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
-modal.style.display = 'flex';
-}, 50);
-}
-}, 40);
-});
-document.getElementById('btn-close-modal').addEventListener('click', function() {
+                        modal.style.display = 'flex';
+                    }, 50);
+                }
+            }, 40);
+        });
+
+        document.getElementById('btn-close-modal').addEventListener('click', function() {
 document.getElementById('victory-modal').style.display = 'none';
 for (let i = 1; i <= 8; i++) {
 const duckEl = document.getElementById(duck-${i});
