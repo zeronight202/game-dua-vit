@@ -84,7 +84,6 @@
             line-height: 1;
             transform: scale(-1, 1);
             display: inline-block;
-            transition: filter 0.3s ease;
         }
 
         .duck-name {
@@ -160,7 +159,7 @@
             cursor: not-allowed;
         }
 
-        /* Modal popup thông báo */
+        /* Modal popup kết quả */
         #victory-modal {
             display: none;
             position: fixed;
@@ -189,7 +188,6 @@
             font-size: 70px;
             margin: 15px 0;
             display: inline-block;
-            transform: scale(-1, 1);
         }
 
         #modal-message {
@@ -229,7 +227,7 @@
     <h2>💥 GIẢI ĐUA VỊT NGOẠI HẠNG QUACK-RACING 💥</h2>
 
     <div id="race-track">
-        <!-- JS tự động render các làn đua tại đây -->
+        <!-- JS tự sinh làn đua -->
     </div>
 
     <div class="controls">
@@ -249,15 +247,16 @@
 
     <script>
         let positions = [];
+        // Sử dụng lại mảng gốc có định dạng màu bằng chấm tròn emoji cực kì an toàn
         const ducks = [
-            { id: 1, name: "Vịt Số 1" },
-            { id: 2, name: "Vịt Số 2" },
-            { id: 3, name: "Vịt Số 3" },
-            { id: 4, name: "Vịt Số 4" },
-            { id: 5, name: "Vịt Số 5" },
-            { id: 6, name: "Vịt Số 6" },
-            { id: 7, name: "Vịt Số 7" },
-            { id: 8, name: "Vịt Số 8" }
+            { id: 1, name: "Vịt Số 1", icon: "🦆🟡" },
+            { id: 2, name: "Vịt Số 2", icon: "🦆🟢" },
+            { id: 3, name: "Vịt Số 3", icon: "🦆🔵" },
+            { id: 4, name: "Vịt Số 4", icon: "🦆🔴" },
+            { id: 5, name: "Vịt Số 5", icon: "🦆🟣" },
+            { id: 6, name: "Vịt Số 6", icon: "🦆🟠" },
+            { id: 7, name: "Vịt Số 7", icon: "🦆🟤" },
+            { id: 8, name: "Vịt Số 8", icon: "🦆⚫" }
         ];
 
         let raceInterval = null;
@@ -283,7 +282,7 @@
 
                 const avatarSpan = document.createElement('span');
                 avatarSpan.className = 'duck-avatar';
-                avatarSpan.innerText = '🦆';
+                avatarSpan.innerText = duck.icon; // Hiện trực vịt kèm chấm màu tương ứng
 
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'duck-name';
@@ -312,12 +311,6 @@
                     duckEl.querySelector('.duck-name').innerText = namesArray[index] || duck.name;
                     duckEl.style.left = '10px';
                     duckEl.classList.add('running');
-                    
-                    const avatarEl = duckEl.querySelector('.duck-avatar');
-                    if (avatarEl) {
-                        const calculatedAngle = index * 45;
-                        avatarEl.style.filter = "hue-rotate(" + calculatedAngle + "deg)";
-                    }
                 }
                 
                 const laneEl = document.getElementById(`lane-${duck.id}`);
@@ -328,9 +321,11 @@
 
             isRacing = true;
             this.disabled = true;
-startTime = performance.now();
-const trackWidth = trackContainer.clientWidth;
-const finishLinePosition = trackWidth - 140;
+            startTime = performance.now();
+
+            const trackWidth = trackContainer.clientWidth;
+            const finishLinePosition = trackWidth - 140; 
+
 raceInterval = setInterval(() => {
 let leadingPosition = -1;
 let leaderId = null;
@@ -372,13 +367,11 @@ if (duckEl) duckEl.classList.remove('running');
 const endTime = performance.now();
 const totalTime = ((endTime - startTime) / 1000).toFixed(2);
 setTimeout(() => {
-const duckEl = document.getElementById(duck-${winner.id});
-const filterStyle = duckEl ? duckEl.querySelector('.duck-avatar').style.filter : '';
 const modal = document.getElementById('victory-modal');
 const modalAvatar = document.getElementById('modal-avatar');
 const modalMessage = document.getElementById('modal-message');
 const modalTime = document.getElementById('modal-time');
-modalAvatar.style.filter = filterStyle;
+modalAvatar.innerText = winner.icon;
 modalMessage.innerText = Chúc mừng [ ${winner.name} ] đã xuất sắc cán đích đầu tiên!;
 modalTime.innerText = ⏱️ Thời gian chạy kỷ lục: ${totalTime} giây;
 modal.style.display = 'flex';
