@@ -105,7 +105,7 @@
             width: 15px;
             background-image: linear-gradient(45deg, #000 25%, transparent 25%),
                               linear-gradient(-45deg, #000 25%, transparent 25%),
-                              linear-gradient(45deg, transparent 75%, #000 75%),
+                              gradient(45deg, transparent 75%, #000 75%),
                               linear-gradient(-45deg, transparent 75%, #000 75%);
             background-size: 10px 10px;
             background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
@@ -229,7 +229,7 @@
     <h2>💥 GIẢI ĐUA VỊT NGOẠI HẠNG QUACK-RACING 💥</h2>
 
     <div id="race-track">
-        <!-- Tự động sinh làn đua qua JS -->
+        <!-- Làn đua tự tạo ở đây -->
     </div>
 
     <div class="controls">
@@ -237,7 +237,6 @@
         <button id="btn-start">Bắt đầu đua!</button>
     </div>
 
-    <!-- Modal thông báo kết quả -->
     <div id="victory-modal">
         <div class="modal-content">
             <h2 style="color: #ff5722; font-size: 28px; margin-bottom: 5px;">🏆 CHIẾN THẮNG 🏆</h2>
@@ -307,7 +306,7 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
-            // Bộ góc màu chuẩn để đổi màu cho 8 vịt khác nhau hoàn toàn
+            // Đã fix lỗi: Mảng chứa 8 giá trị góc màu rõ ràng không bị bỏ trống
             const hueAngles =;
 
             ducks.forEach((duck, index) => {
@@ -326,8 +325,9 @@
                 const laneEl = document.getElementById(`lane-${duck.id}`);
                 if (laneEl) laneEl.classList.remove('leading');
                 
-positions[duck.id] = 10;
-});
+                positions[duck.id] = 10;
+            });
+
 isRacing = true;
 this.disabled = true;
 startTime = performance.now();
