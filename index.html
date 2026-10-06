@@ -63,19 +63,6 @@
             align-items: center;
         }
 
-        /* Hiệu ứng lắc lư khi bơi bơi */
-        @keyframes swimWaddle {
-            0% { transform: scaleX(-1) rotate(0deg); }
-            25% { transform: scaleX(-1) rotate(-8deg); }
-            50% { transform: scaleX(-1) rotate(0deg); }
-            75% { transform: scaleX(-1) rotate(8deg); }
-            100% { transform: scaleX(-1) rotate(0deg); }
-        }
-
-        .duck.swimming .duck-avatar {
-            animation: swimWaddle 0.25s infinite linear;
-        }
-
         .duck-avatar {
             font-size: 30px;
             display: inline-block;
@@ -127,7 +114,6 @@
             outline: none;
             text-align: center;
             margin-bottom: 15px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
         button {
@@ -181,13 +167,13 @@
 
     <div id="race-track">
         <div class="lane" id="lane-1"><div class="finish-line-marker"></div><div class="duck" id="duck-1"><span class="duck-avatar">🦆🟡</span><span class="duck-name" id="name-1">Vịt Số 1</span></div></div>
-        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name">Vịt Số 2</span></div></div>
-        <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3"><span class="duck-avatar">🦆🔵</span><span class="duck-name">Vịt Số 3</span></div></div>
-        <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4"><span class="duck-avatar">🦆🔴</span><span class="duck-name">Vịt Số 4</span></div></div>
-        <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5"><span class="duck-avatar">🦆🟣</span><span class="duck-name">Vịt Số 5</span></div></div>
-        <div class="lane" id="lane-6"><div class="finish-line-marker"></div><div class="duck" id="duck-6"><span class="duck-avatar">🦆🟠</span><span class="duck-name">Vịt Số 6</span></div></div>
-        <div class="lane" id="lane-7"><div class="finish-line-marker"></div><div class="duck" id="duck-7"><span class="duck-avatar">🦆🟤</span><span class="duck-name">Vịt Số 7</span></div></div>
-        <div class="lane" id="lane-8"><div class="finish-line-marker"></div><div class="duck" id="duck-8"><span class="duck-avatar">🦆⚫</span><span class="duck-name">Vịt Số 8</span></div></div>
+        <div class="lane" id="lane-2"><div class="finish-line-marker"></div><div class="duck" id="duck-2"><span class="duck-avatar">🦆🟢</span><span class="duck-name" id="name-2">Vịt Số 2</span></div></div>
+        <div class="lane" id="lane-3"><div class="finish-line-marker"></div><div class="duck" id="duck-3"><span class="duck-avatar">🦆🔵</span><span class="duck-name" id="name-3">Vịt Số 3</span></div></div>
+        <div class="lane" id="lane-4"><div class="finish-line-marker"></div><div class="duck" id="duck-4"><span class="duck-avatar">🦆🔴</span><span class="duck-name" id="name-4">Vịt Số 4</span></div></div>
+        <div class="lane" id="lane-5"><div class="finish-line-marker"></div><div class="duck" id="duck-5"><span class="duck-avatar">🦆🟣</span><span class="duck-name" id="name-5">Vịt Số 5</span></div></div>
+        <div class="lane" id="lane-6"><div class="finish-line-marker"></div><div class="duck" id="duck-6"><span class="duck-avatar">🦆🟠</span><span class="duck-name" id="name-6">Vịt Số 6</span></div></div>
+        <div class="lane" id="lane-7"><div class="finish-line-marker"></div><div class="duck" id="duck-7"><span class="duck-avatar">🦆🟤</span><span class="duck-name" id="name-7">Vịt Số 7</span></div></div>
+        <div class="lane" id="lane-8"><div class="finish-line-marker"></div><div class="duck" id="duck-8"><span class="duck-avatar">🦆⚫</span><span class="duck-name" id="name-8">Vịt Số 8</span></div></div>
     </div>
 
     <div class="controls">
@@ -204,7 +190,7 @@
     </div>
 
     <script>
-        let positions = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10 };
+        let positions = { "1": 10, "2": 10, "3": 10, "4": 10, "5": 10, "6": 10, "7": 10, "8": 10 };
         let raceInterval = null;
         let isRacing = false;
 
@@ -216,14 +202,12 @@
                 .map(name => name.trim())
                 .filter(name => name !== "");
 
+            // Gán tên người chơi và đặt vị trí xuất phát ban đầu
             for (let i = 1; i <= 8; i++) {
                 positions[i] = 10;
                 
                 const duckEl = document.getElementById(`duck-${i}`);
-                if (duckEl) {
-                    duckEl.style.left = '10px';
-                    duckEl.classList.add('swimming'); 
-                }
+                if (duckEl) duckEl.style.left = '10px';
 
                 const nameEl = document.getElementById(`name-${i}`);
                 if (nameEl) {
@@ -246,7 +230,7 @@
                     
                     const duckEl = document.getElementById(`duck-${i}`);
                     if (duckEl) {
-                        duckEl.style.left = positions[i] + "px"; // Đã sửa sạch sẽ lỗi dính chữ
+                        duckEl.style.left = positions[i] + "px";
                     }
 
                     if (positions[i] >= finishLinePosition && !winnerId) {
@@ -259,11 +243,6 @@
                     isRacing = false;
                     document.getElementById('btn-start').disabled = false;
 
-                    for (let i = 1; i <= 8; i++) {
-                        const duckEl = document.getElementById(`duck-${i}`);
-                        if (duckEl) duckEl.classList.remove('swimming');
-                    }
-
                     const currentNameEl = document.getElementById(`name-${winnerId}`);
                     let winnerName = currentNameEl ? currentNameEl.innerText : `Vịt Số ${winnerId}`;
 
@@ -271,3 +250,19 @@
                         const modal = document.getElementById('victory-modal');
                         document.getElementById('modal-message').innerText = `Chúc mừng [ ${winnerName} ] đã giành chiến thắng!`;
                         modal.style.display = 'flex';
+                    }, 50);
+                }
+            }, 40);
+        });
+
+        document.getElementById('btn-close-modal').addEventListener('click', function() {
+            document.getElementById('victory-modal').style.display = 'none';
+            for (let i = 1; i <= 8; i++) {
+                const duckEl = document.getElementById(`duck-${i}`);
+                if (duckEl) duckEl.style.left = '10px';
+                positions[i] = 10;
+            }
+        });
+    </script>
+</body>
+</html>
